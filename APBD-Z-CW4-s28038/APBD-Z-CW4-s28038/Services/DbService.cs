@@ -7,14 +7,16 @@ namespace APBD_Z_CW4_s28038.Services;
 
 public interface IDbService
 {
-    public Task<IEnumerable<PatientGetDTO>> GetPatientDetails();
+    public Task<IEnumerable<PatientGetDTO>> GetPatientDetails(int id);
 }
+
 
 public class DbService(MyDbContext data) : IDbService
 {
-    public async Task<IEnumerable<PatientGetDTO>> GetPatientDetails()
+    public async Task<IEnumerable<PatientGetDTO>> GetPatientDetails(int id)
     {
         return await data.Patients
+            .Where(p=>p.IdPatient == id)
             .Select(st => new PatientGetDTO
             {
                 IdPatient = st.IdPatient,

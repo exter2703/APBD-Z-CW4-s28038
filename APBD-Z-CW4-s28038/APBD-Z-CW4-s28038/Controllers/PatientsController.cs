@@ -8,11 +8,19 @@ namespace APBD_Z_CW4_s28038.Controllers;
 public class PatientsController(IDbService service) : ControllerBase
 {
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetPatients(int id)
+    public async Task<IActionResult> GetPatient(int id)
     {
-        var patients = await service.GetPatientDetails (id);
-        if (patients == null)
-            return NotFound();
-        return Ok(await service.GetPatientDetails(id));
+        try
+        {
+            var patient = await service.GetPatientDetails(id);
+            if (patient == null)
+                throw new Exception($"Patient with id {id} not found.");
+            return Ok(patient);
+        }
+        catch (Exception ex)
+        {
+            return NotFound(ex.Message);
+        }
     }
+
 }
